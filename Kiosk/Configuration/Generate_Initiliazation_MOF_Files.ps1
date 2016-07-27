@@ -23,13 +23,13 @@ Configuration McBIC_Kids_Checkin_Initialization
         {
             Ensure = 'Present'
             Type = 'Directory'
-            DestinationPath = $node.PullSource
+            DestinationPath = $Node.GitRepoDir
         }
 
         xSmbShare PullShare
         {
-            Name = 'DSCPull'
-            Path = $node.PullSource
+            Name = $Node.PullShareName
+            Path = $node.GitRepoDir
             Ensure = 'Present'
             DependsOn = '[File]PullFolder'
         }
@@ -43,7 +43,7 @@ Configuration McBIC_Kids_Checkin_Initialization
             RefreshFrequencyMins = 30
             RefreshMode = 'PULL'
             DownloadManagerName = 'DSCFileDownloadManager'
-            DownloadManagerCustomData = @{SourcePath = ('\\' + $Node.NodeName + '\DSCPull')}
+            DownloadManagerCustomData = @{SourcePath = ('\\' + $Node.NodeName + '\' + $Node.PullShareName + '\' + $Node.PullSourceFolder)}
         }
     <# End Pull Configuration Section #>
     }
@@ -75,7 +75,10 @@ $configurationData =
             AdminUserName = $adminUserName
             AdminPassword = $adminCred
             ConfigurationID = $configID
-            PullSource = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Pull'
+            InitialPushSource = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Pull'
+            GitRepoDir = 'C:\DSCPull'
+            PullShareName = 'DSCPull'
+            PullSourceFolder = 'McBICKids\Kiosk\Configuration\Deploy-Pull'
         }
     )
 }
