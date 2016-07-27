@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mofCreationParameters>
+	<AdminUser UserName='McBIC Admin' Password='1050SYorkSt' />
+	<CheckInUser UserName='Check In' Password='mcbic' />
+	<ConfigId ConfigId='24145e72-50a3-4c11-b8e2-85c95e886152' />
+	<GitRepoDir GitRepoDir='C:\Repos' />
+	<InitializationPushSource InitializationPushSource='C:\Repos\McBICKids\Kiosk\Configuration\Deploy-Initial' />
+	<PullDir PullDir='C:\Repos\McBICKids\Kiosk\Configuration\Deploy-Pull' />
+	<PullShareName PullShareName='DSCPull' />
+	<Computers>
+		<Computer Name='KIOSK-DEV' />
+		<Computer Name='KIOSK-NURSERY2' />
+	</Computers>
 </mofCreationParameters>

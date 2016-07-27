@@ -29,7 +29,7 @@ Configuration McBIC_Kids_Checkin_Initialization
         xSmbShare PullShare
         {
             Name = $Node.PullShareName
-            Path = $node.GitRepoDir
+            Path = $node.PullDir
             Ensure = 'Present'
             DependsOn = '[File]PullFolder'
         }
@@ -49,18 +49,8 @@ Configuration McBIC_Kids_Checkin_Initialization
     }
 }
 
-# Configure the Check In username and password
-$checkinPassword = ConvertTo-SecureString -String 'mcbic' -AsPlainText -Force
-$checkinUsername = 'Check In'
-$checkinCred = New-Object System.Management.Automation.PSCredential($checkinUsername,$checkinPassword)
-
-# Configure the Admin username and password
-$adminPassword = ConvertTo-SecureString -String '1050SYorkSt' -AsPlainText -Force
-$adminUserName = 'McBIC Admin'
-$adminCred = New-Object System.Management.Automation.PSCredential($adminUserName,$adminPassword)
-
-# Specify the configuration id to use for all of the nodes
-$configID = '24145e72-50a3-4c11-b8e2-85c95e886152'
+# Load the global configurations
+[xml]$xmlConfig = Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'MOF_Creation_Parameters.xml' )
 
 # Set up the configuration data
 $configurationData = 
@@ -70,30 +60,22 @@ $configurationData =
         @{
             NodeName = '*'
             PSDscAllowPlainTextPassword = $true
-            CheckInUserName = $checkinUsername
-            CheckInPassword = $checkinCred
-            AdminUserName = $adminUserName
-            AdminPassword = $adminCred
-            ConfigurationID = $configID
-            InitialPushSource = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Initial'
-            GitRepoDir = 'C:\DSCPull'
-            PullPath = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Pull'
-            PullShareName = 'DSCPull'
+            AdminUserName = $xmlConfig.mofCreationParameters.AdminUser.UserName
+            AdminPassword = New-Object System.Management.Automation.PSCredential($xmlConfig.mofCreationParameters.AdminUser.UserName,(ConvertTo-SecureString -String $xmlConfig.mofCreationParameters.AdminUser.Password -AsPlainText -Force))
+            ConfigurationID = $xmlConfig.mofCreationParameters.ConfigId.ConfigId
+            GitRepoDir = $xmlConfig.mofCreationParameters.GitRepoDir.GitRepoDir
+            InitializationPushSource = $xmlConfig.mofCreationParameters.InitializationPushSource.InitializationPushSource
+            PullDir = $xmlConfig.mofCreationParameters.PullDir.PullDir
+            PullShareName = $xmlConfig.mofCreationParameters.PullShareName.PullShareName
         }
     )
 }
 
-# Create the list of computers this configuration will be applied to
-$computers = @(
-    'KIOSK-DEV',
-    'KIOSK-NURSERY2'
-)
-
 # Add the computers to the configuration data
-$computers | % { $configurationData.AllNodes += @{ NodeName = $_ } }
+$xmlConfig.mofCreationParameters.Computers.Computer | % { $configurationData.AllNodes += @{ NodeName = $_.Name } }
 
 # Create the MOF files for the configuration
-McBIC_Kids_Checkin_Initialization -OutputPath 'Deploy-Initial' -ConfigurationData $configurationData
+McBIC_Kids_Checkin_Initialization -OutputPath ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath ( Split-Path -Path $xmlConfig.mofCreationParameters.InitializationPushSource.InitializationPushSource -Leaf ) ) -ConfigurationData $configurationData
 
 # Create the checksums for the MOFs
-New-DscChecksum -Path 'Deploy-Initial' -Force
+New-DscChecksum -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath ( Split-Path -Path $xmlConfig.mofCreationParameters.InitializationPushSource.InitializationPushSource -Leaf ) ) -Force
