@@ -1,5 +1,5 @@
 # Define the path to the pull folder
-$pullFolder = 'C:\DSCPull'
+$pullFolder = 'C:\DSCPull\McBICKids'
 
 # Make sure the computer is named properly
 [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
@@ -32,10 +32,11 @@ Start-Sleep -Seconds 10
 
 # Add the local computer to the trusted hosts
 Write-Host 'Configuring the WINRM trusted hosts...' -ForegroundColor Cyan
-winrm set winrm/config/client ( '@{TrustedHosts=' + $env:COMPUTERNAME + '}' )
+#winrm set winrm/config/client ( '@{TrustedHosts=' + $env:COMPUTERNAME + '}' )
+winrm set winrm/config/client @{'TrustedHosts' = $env:COMPUTERNAME }
 
 # Check if GIT is installed
-try { git --verionsion }
+try { git --verionsion | Out-Null }
 catch
 {
     # Download GIT
