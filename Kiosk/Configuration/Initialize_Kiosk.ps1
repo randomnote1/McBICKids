@@ -32,16 +32,35 @@ Start-Sleep -Seconds 10
 
 # Add the local computer to the trusted hosts
 Write-Host 'Configuring the WINRM trusted hosts...' -ForegroundColor Cyan
-winrm set winrm/config/client ( '@{TrustedHosts=�' + $env:COMPUTERNAME + '�}' )
+winrm set winrm/config/client ( '@{TrustedHosts=' + $env:COMPUTERNAME + '}' )
 
-# Download GIT
-$client = New-Object System.Net.WebClient
-$downloadURL = 'https://github.com/git-for-windows/git/releases/download/v2.9.2.windows.1/Git-2.9.2-32-bit.exe'
-$downloadPath = Join-Path -Path $env:USERPROFILE -ChildPath 'Downloads\git.exe'
-$client.DownloadFile($downloadURL,$downloadPath)
+# Check if GIT is installed
+try { git --verionsion }
+catch
+{
+    # Download GIT
+    $client = New-Object System.Net.WebClient
+    $downloadURL = 'https://github.com/git-for-windows/git/releases/download/v2.9.2.windows.1/Git-2.9.2-32-bit.exe'
+    $downloadPath = Join-Path -Path $env:USERPROFILE -ChildPath 'Downloads\git.exe'
+    $client.DownloadFile($downloadURL,$downloadPath)
 
-# Install GIT
-& $downloadPath /SILENT /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"
+    # Install GIT
+    & $downloadPath /SILENT /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"
+
+    $gitNotInstalled = $true
+    while ( $gitNotInstalled )
+    {
+        # Update the path
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
+        try
+        {
+            git --version
+            $gitNotInstalled = $false
+        } 
+        catch { start-sleep -Seconds 30 }
+    }
+}
 
 # Clone the source
 git clone 'https://github.com/randomnote1/McBICKids.git' $pullFolder
@@ -60,7 +79,7 @@ Install-Module -Name xSmbShare -ErrorAction Stop
 
 # Define the MOF folder
 Write-Host 'Performing the initial push configuration...' -ForegroundColor Cyan
-$mofFolder = ( Join-Path -Path $PSScriptRoot -ChildPath 'Deploy-Initial' )
+$mofFolder = ( Join-Path -Path $pullFolder -ChildPath '\Kiosk\Configuration\Deploy-Initial' )
 
 # Set the configuration
 Start-DscConfiguration -ComputerName $env:COMPUTERNAME -Path $mofFolder -Wait -Verbose -Force
