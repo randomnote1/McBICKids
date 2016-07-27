@@ -44,7 +44,7 @@ Start-Sleep -Seconds 10
 #winrm set winrm/config/client @{'TrustedHosts' = $env:COMPUTERNAME }
 
 # Check if GIT is installed
-try { git --verionsion | Out-Null }
+try { git --version | Out-Null }
 catch
 {
     # Download GIT
