@@ -1,3 +1,6 @@
+# Define the path to the pull folder
+$pullFolder = 'C:\DSCPull'
+
 # Make sure the computer is named properly
 [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
 Write-Host 'Checking the computer name...' -ForegroundColor Cyan
@@ -29,7 +32,7 @@ Start-Sleep -Seconds 10
 
 # Add the local computer to the trusted hosts
 Write-Host 'Configuring the WINRM trusted hosts...' -ForegroundColor Cyan
-winrm set winrm/config/client ( '@{TrustedHosts=”' + $env:COMPUTERNAME + '”}' )
+winrm set winrm/config/client ( '@{TrustedHosts=ï¿½' + $env:COMPUTERNAME + 'ï¿½}' )
 
 # Download GIT
 $client = New-Object System.Net.WebClient
@@ -39,6 +42,9 @@ $client.DownloadFile($downloadURL,$downloadPath)
 
 # Install GIT
 & $downloadPath /SILENT /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"
+
+# Clone the source
+git clone 'https://github.com/randomnote1/McBICKids.git' $pullFolder
 
 # Install the package provider
 Write-Host 'Install the NuGet package provider...' -ForegroundColor Cyan

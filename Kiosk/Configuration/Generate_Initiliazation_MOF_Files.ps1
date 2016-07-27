@@ -26,54 +26,6 @@ Configuration McBIC_Kids_Checkin_Initialization
             DestinationPath = $node.PullSource
         }
 
-        File ConfigMetaMof
-        {
-            Ensure = 'Present'
-            Type = 'File'
-            SourcePath = ( Join-Path -Path $node.MofSource -ChildPath (  $node.ConfigurationID + '.meta.mof' ) )
-            DestinationPath = ( Join-Path -Path $node.PullSource -ChildPath ( $node.ConfigurationID + '.meta.mof' ) )
-            CheckSum = 'SHA-256'
-            Force = $true
-            MatchSource = $true
-            DependsOn = '[File]PullFolder'
-        }
-
-        File ConfigMetaMofChecksum
-        {
-            Ensure = 'Present'
-            Type = 'File'
-            SourcePath =  ( Join-Path -Path $node.MofSource -ChildPath ( $node.ConfigurationID + '.meta.mof.checksum' ) )
-            DestinationPath = ( Join-Path -Path $node.PullSource -ChildPath ( $node.ConfigurationID + '.meta.mof.checksum' ) )
-            CheckSum = 'SHA-256'
-            Force = $true
-            MatchSource = $true
-            DependsOn = '[File]PullFolder'
-        }
-        
-        File ConfigMof
-        {
-            Ensure = 'Present'
-            Type = 'File'
-            SourcePath = ( Join-Path -Path $node.MofSource -ChildPath ( $node.ConfigurationID + '.mof' ) )
-            DestinationPath = ( Join-Path -Path $node.PullSource -ChildPath ( $node.ConfigurationID + '.mof' ) )
-            CheckSum = 'SHA-256'
-            Force = $true
-            MatchSource = $true
-            DependsOn = '[File]PullFolder'
-        }
-
-        File ConfigMofChecksum
-        {
-            Ensure = 'Present'
-            Type = 'File'
-            SourcePath = ( Join-Path -Path $node.MofSource -ChildPath ( $node.ConfigurationID + '.mof.checksum' ) )
-            DestinationPath = ( Join-Path -Path $node.PullSource -ChildPath ( $node.ConfigurationID + '.mof.checksum' ) )
-            CheckSum = 'SHA-256'
-            Force = $true
-            MatchSource = $true
-            DependsOn = '[File]PullFolder'
-        }
-
         xSmbShare PullShare
         {
             Name = 'DSCPull'
@@ -123,8 +75,7 @@ $configurationData =
             AdminUserName = $adminUserName
             AdminPassword = $adminCred
             ConfigurationID = $configID
-            MofSource = ( Join-Path -Path ( Join-Path -Path 'C:\Users\McBIC Admin\OneDrive' -ChildPath ( Get-Item -Path (Get-Location).Path ).Name ) -ChildPath 'McBIC_Kids_Checkin' )
-            PullSource = 'C:\DSCPull'
+            PullSource = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Pull'
         }
     )
 }
