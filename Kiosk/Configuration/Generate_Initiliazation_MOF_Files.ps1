@@ -43,7 +43,7 @@ Configuration McBIC_Kids_Checkin_Initialization
             RefreshFrequencyMins = 30
             RefreshMode = 'PULL'
             DownloadManagerName = 'DSCFileDownloadManager'
-            DownloadManagerCustomData = @{SourcePath = ('\\' + $Node.NodeName + '\' + $Node.PullShareName + '\' + $Node.PullSourceFolder)}
+            DownloadManagerCustomData = @{SourcePath = ('\\' + $Node.NodeName + '\' + $Node.PullShareName)}
         }
     <# End Pull Configuration Section #>
     }
@@ -75,10 +75,10 @@ $configurationData =
             AdminUserName = $adminUserName
             AdminPassword = $adminCred
             ConfigurationID = $configID
-            InitialPushSource = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Pull'
+            InitialPushSource = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Initial'
             GitRepoDir = 'C:\DSCPull'
+            PullPath = 'C:\DSCPull\McBICKids\Kiosk\Configuration\Deploy-Pull'
             PullShareName = 'DSCPull'
-            PullSourceFolder = 'McBICKids\Kiosk\Configuration\Deploy-Pull'
         }
     )
 }
