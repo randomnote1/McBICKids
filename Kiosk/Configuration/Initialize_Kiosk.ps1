@@ -31,9 +31,9 @@ Write-Host 'Configuring WINRM...' -ForegroundColor Cyan
 Start-Sleep -Seconds 10
 
 # Add the local computer to the trusted hosts
-Write-Host 'Configuring the WINRM trusted hosts...' -ForegroundColor Cyan
+#Write-Host 'Configuring the WINRM trusted hosts...' -ForegroundColor Cyan
 #winrm set winrm/config/client ( '@{TrustedHosts=' + $env:COMPUTERNAME + '}' )
-winrm set winrm/config/client @{'TrustedHosts' = $env:COMPUTERNAME }
+#winrm set winrm/config/client @{'TrustedHosts' = $env:COMPUTERNAME }
 
 # Check if GIT is installed
 try { git --verionsion | Out-Null }
