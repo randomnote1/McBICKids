@@ -7,7 +7,7 @@ Set-ExecutionPolicy RemoteSigned
 #>
 
 # Define the path to the pull folder
-$pullFolder = 'C:\DSCPull\McBICKids'
+$pullFolder = 'C:\Repos\McBICKids'
 
 # Make sure the computer is named properly
 [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
