@@ -1,3 +1,11 @@
+<#
+# Run these commands manually prior to running this script
+$initializationScript = Join-Path -Path $env:USERPROFILE -ChildPath 'Downloads\Initialize_Kiosk.ps1'
+(New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/randomnote1/McBICKids/master/Kiosk/Configuration/Initialize_Kiosk.ps1',$initializationScript)
+Set-ExecutionPolicy RemoteSigned
+& $initializationScript
+#>
+
 # Define the path to the pull folder
 $pullFolder = 'C:\DSCPull\McBICKids'
 
