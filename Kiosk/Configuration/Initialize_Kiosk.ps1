@@ -48,12 +48,14 @@ try { git --verionsion | Out-Null }
 catch
 {
     # Download GIT
+    Write-Host 'Downloading GIT...' -ForegroundColor Cyan
     $client = New-Object System.Net.WebClient
     $downloadURL = 'https://github.com/git-for-windows/git/releases/download/v2.9.2.windows.1/Git-2.9.2-32-bit.exe'
     $downloadPath = Join-Path -Path $env:USERPROFILE -ChildPath 'Downloads\git.exe'
     $client.DownloadFile($downloadURL,$downloadPath)
 
     # Install GIT
+    Write-Host 'Installing GIT...' -ForegroundColor Cyan
     & $downloadPath /SILENT /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh"
 
     $gitNotInstalled = $true
@@ -72,6 +74,7 @@ catch
 }
 
 # Clone the source
+Write-Host 'Downloading the GIT repository...' -ForegroundColor Cyan
 git clone 'https://github.com/randomnote1/McBICKids.git' $pullFolder
 
 # Install the package provider
