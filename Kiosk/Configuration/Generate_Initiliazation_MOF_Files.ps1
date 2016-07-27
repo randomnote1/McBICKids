@@ -23,13 +23,13 @@ Configuration McBIC_Kids_Checkin_Initialization
         {
             Ensure = 'Present'
             Type = 'Directory'
-            DestinationPath = $Node.GitRepoDir
+            DestinationPath = $Node.PullDir
         }
 
         xSmbShare PullShare
         {
             Name = $Node.PullShareName
-            Path = $node.PullDir
+            Path = $Node.PullDir
             Ensure = 'Present'
             DependsOn = '[File]PullFolder'
         }
