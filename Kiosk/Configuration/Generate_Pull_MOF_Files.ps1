@@ -145,16 +145,16 @@ Configuration McBIC_Kids_Checkin
     # Create a scheduled task to sync changes from the GIT repository
         xScheduledTask SyncRepository
         {
-            ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
-            RepeatInterval = 15
-            ScheduleType = 'Minutes'
             TaskName = 'Retrieve Configuration Updates'
-            ActionArguments = ( 'pull "https://github.com/randomnote1/McBICKids.git"' )
-            DependsOn = '[File]PullFolder'
-            Enable = $true
-            Ensure = 'Present'
-            StartTime = '00:00:00'
             TaskPath = 'C:\Repos\McBICKids'
+            ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
+            ActionArguments = ' pull "https://github.com/randomnote1/McBICKids.git"'
+            ScheduleType = 'Minutes'
+            RepeatInterval = 15
+            StartTime = '12:00 AM'
+            Ensure = 'Present'
+            Enable = $true
+            DependsOn = '[File]PullFolder'
         }
     }
 }
