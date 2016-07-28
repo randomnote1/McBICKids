@@ -119,8 +119,8 @@ Configuration McBIC_Kids_Checkin
         {
             Ensure = 'Present'
             Type = 'File'
-            SourcePath = ( Join-Path -Path ( Split-Path -Path $node.PullDir -Parent ) -ChildPath 'McBIC_Kids_CheckIn_Login_Script.lnk' )
-            DestinationPath = ( Join-Path -Path ([Environment]::GetFolderPath('CommonStartup')) -ChildPath 'McBIC_Kids_CheckIn_Login_Script.lnk' )
+            SourcePath = ( Join-Path -Path ( Split-Path -Path $node.PullDir -Parent ) -ChildPath 'McBIC_Kids_CheckIn_Logon_Script.lnk' )
+            DestinationPath = ( Join-Path -Path ([Environment]::GetFolderPath('CommonStartup')) -ChildPath 'McBIC_Kids_CheckIn_Logon_Script.lnk' )
             CheckSum = 'SHA-256'
             Force = $true
             MatchSource = $true
