@@ -146,7 +146,7 @@ Configuration McBIC_Kids_Checkin
         xScheduledTask SyncRepository
         {
             TaskName = 'Retrieve Configuration Updates'
-            TaskPath = 'C:\Repos\McBICKids'
+            ActionWorkingPath = 'C:\Repos\McBICKids'
             ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
             #ActionArguments = ' pull "https://github.com/randomnote1/McBICKids.git"'
             ScheduleType = 'Minutes'
