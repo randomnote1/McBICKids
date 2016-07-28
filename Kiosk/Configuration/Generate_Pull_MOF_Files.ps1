@@ -149,7 +149,7 @@ Configuration McBIC_Kids_Checkin
             RepeatInterval = 15
             ScheduleType = 'Minutes'
             TaskName = 'Retrieve Configuration Updates'
-            ActionArguments = ( 'fetch "https://github.com/randomnote1/McBICKids.git"' )
+            ActionArguments = ( 'pull "https://github.com/randomnote1/McBICKids.git"' )
             DependsOn = '[File]PullFolder'
             Enable = $true
             Ensure = 'Present'
