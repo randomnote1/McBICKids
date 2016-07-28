@@ -1,10 +1,13 @@
+# Load the global configurations
+[xml]$xmlConfig = Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'MOF_Creation_Parameters.xml' )
+
 # Set the desktop wallpaper
 Write-Host 'Setting the desktop wallpaper...'
 $wallpaperKey = 'HKCU:\Control Panel\Desktop'
-$wallpaperValue = '\\' + $env:COMPUTERNAME + '\DSCPull\Images\Background.png'
+$wallpaperValue = ( Join-Path -Path ( Split-Path -Path $xmlConfig.mofCreationParameters.PullDir.PullDir -Parent ) -ChildPath '\Images\Background.png' )
 if ( ( Get-ItemProperty -Path $wallpaperKey -Name Wallpaper ).Wallpaper -ne $wallpaperValue )
 {
-    Set-ItemProperty -Path $wallpaperKey -Name Wallpaper -Value  ( '\\' + $env:COMPUTERNAME + '\DSCPull\Images\Background.png' )
+    Set-ItemProperty -Path $wallpaperKey -Name Wallpaper -Value $wallpaperValue
 }
 
 switch ( $env:USERNAME )
