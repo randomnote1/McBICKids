@@ -142,8 +142,8 @@ Configuration McBIC_Kids_Checkin
         }
     <# End Windows Update #>
 
-    # Create a scheduled task to fetch changes from the GIT repository
-        xScheduledTask FetchRepository
+    # Create a scheduled task to sync changes from the GIT repository
+        xScheduledTask SyncRepository
         {
             ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
             RepeatInterval = 15
