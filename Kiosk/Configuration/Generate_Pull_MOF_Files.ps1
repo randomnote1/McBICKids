@@ -8,6 +8,7 @@ Configuration McBIC_Kids_Checkin
     Import-DscResource -ModuleName cPowerPlan -Name cPowerPlan -ModuleVersion '1.0.0.0'
     Import-DscResource -ModuleName xWindowsUpdate -Name xMicrosoftUpdate -ModuleVersion '2.5.0.0'
     Import-DscResource -ModuleName xWindowsUpdate -Name xWindowsUpdateAgent -ModuleVersion '2.5.0.0'
+    Import-DSCResource -ModuleName xComputerManagement -Name xScheduledTask -ModuleVersion '1.7.0.0'
     
     Node $AllNodes.NodeName
     {
@@ -140,6 +141,21 @@ Configuration McBIC_Kids_Checkin
             Notifications = 'Disabled'
         }
     <# End Windows Update #>
+
+    # Create a scheduled task to fetch changes from the GIT repository
+        xScheduledTask FetchRepository
+        {
+            ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
+            RepeatInterval = 15
+            ScheduleType = 'Minutes'
+            TaskName = 'Retrieve Configuration Updates'
+            ActionArguments = ( 'fetch "https://github.com/randomnote1/McBICKids.git" ' + $node.PullDir )
+            DependsOn = '[File]PullFolder'
+            Enable = $true
+            Ensure = 'Present'
+            StartTime = '00:00:00'
+            TaskPath = ''
+        }
     }
 }
 
@@ -173,8 +189,8 @@ $xmlConfig.mofCreationParameters.ConfigId.ConfigId | % { $configurationData.AllN
 # Create the MOF files for the configuration
 McBIC_Kids_Checkin -OutputPath ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath ( Split-Path -Path $xmlConfig.mofCreationParameters.PullDir.PullDir -Leaf ) ) -ConfigurationData $configurationData
 
-# Create the checksums for the MOFs
-New-DscChecksum -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath ( Split-Path -Path $xmlConfig.mofCreationParameters.PullDir.PullDir -Leaf ) ) -Force
-
 # Copy the resources to the deployment pull folder
 Copy-Item -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'Resources\*' ) -Destination ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath ( Split-Path -Path $xmlConfig.mofCreationParameters.PullDir.PullDir -Leaf ) )
+
+# Create the checksums for the MOFs
+New-DscChecksum -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath ( Split-Path -Path $xmlConfig.mofCreationParameters.PullDir.PullDir -Leaf ) ) -Force
