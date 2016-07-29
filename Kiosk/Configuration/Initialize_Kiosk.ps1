@@ -26,6 +26,7 @@ if ( [System.Windows.Forms.MessageBox]::Show(('The computer name is "' + $env:CO
     # If for some reason the computer is not restarted, exit the script
     Exit
 }
+Write-Host $env:COMPUTERNAME -ForegroundColor Cyan
 
 # Make sure the network connection is set to private
 Write-Host 'Setting the network profile to private...' -ForegroundColor Cyan
