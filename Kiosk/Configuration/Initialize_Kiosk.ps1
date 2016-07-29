@@ -44,6 +44,9 @@ Start-Sleep -Seconds 10
 #winrm set winrm/config/client ( '@{TrustedHosts=' + $env:COMPUTERNAME + '}' )
 #winrm set winrm/config/client @{'TrustedHosts' = $env:COMPUTERNAME }
 
+# Make sure the SchedProv.mof is loaded
+mofcomp C:\Windows\system32\wbem\SchedProv.mof
+
 # Check if GIT is installed
 try { git --version | Out-Null }
 catch
