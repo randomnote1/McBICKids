@@ -148,7 +148,7 @@ Configuration McBIC_Kids_Checkin
         {
             TaskName = 'Retrieve Configuration Updates'
             ActionWorkingPath = 'C:\Repos\McBICKids'
-            ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
+            ActionExecutable = '"C:\Program Files\Git\cmd\git.exe"'
             ActionArguments = ' pull "https://github.com/randomnote1/McBICKids.git"'
             ScheduleType = 'Minutes'
             RepeatInterval = 15
