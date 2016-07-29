@@ -10,7 +10,7 @@ $logins = @{
 }
 if ( $env:COMPUTERNAME -match '^KIOSK-([A-Za-z]*)[\d]?$' )
 {
-    $loginName = $logins.$Matches[1]
+    $loginName = $logins.($Matches[1])
 }
 
 # Set the desktop wallpaper
