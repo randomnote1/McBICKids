@@ -4,6 +4,7 @@
 # Computer to login mapping for LambsList
 $logins = @{
     'DEV' = 'kids@mcbic.org'
+    'EXTRA' = 'kids@mcbic.org'
     'NURSERY' = 'nursery@mcbic.org'
     'KIDS' = 'kids@mcbic.org'
     'FX' = 'fx@mcbic.org'

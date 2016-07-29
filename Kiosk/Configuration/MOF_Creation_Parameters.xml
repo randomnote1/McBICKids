@@ -9,6 +9,7 @@
 	<PullShareName PullShareName='DSCPull' />
 	<Computers>
 		<Computer Name='KIOSK-DEV' />
+		<Computer Name='KIOSK-EXTRA' />
 		<Computer Name='KIOSK-FX1' />
 		<Computer Name='KIOSK-FX2' />
 		<Computer Name='KIOSK-KIDS1' />
