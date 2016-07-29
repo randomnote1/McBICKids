@@ -35,7 +35,7 @@ switch ( $env:USERNAME )
         $doc = $ie.Document
 
         # If we need to log into the page
-        if ( $doc.getElementById('login').Value )
+        if ( $doc.getElementById('login') )
         {
             # Enter the username
             $doc.getElementById('login').Value = 'test'
