@@ -152,7 +152,7 @@ Configuration McBIC_Kids_Checkin
             ActionArguments = ' pull "https://github.com/randomnote1/McBICKids.git"'
             ScheduleType = 'Minutes'
             RepeatInterval = 15
-            StartTime = '12:10 AM'
+            #StartTime = '12:10 AM'
             Ensure = 'Present'
             Enable = $true
             DependsOn = '[File]PullFolder'
