@@ -110,7 +110,8 @@ Configuration McBIC_Kids_Checkin
         cPowerPlan PowerPlan
         {
             IsSingleInstance = 'Yes'
-            PowerPlan = 'High Performance'
+            #PowerPlan = 'High Performance'
+            PowerPlan = 'Balanced'
         }
     <# End power plan configuration #>
 
