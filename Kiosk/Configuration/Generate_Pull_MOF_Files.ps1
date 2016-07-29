@@ -157,6 +157,17 @@ Configuration McBIC_Kids_Checkin
             Enable = $true
             DependsOn = '[File]PullFolder'
         }
+
+    <# Remove the old stuff #>
+        file RemoveCheckInShortcut
+        {
+            Ensure = 'Absent'
+            Type = 'File'
+            DestinationPath = 'C:\Users\Check In\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Check In.lnk'
+            Force = $true
+            DependsOn = '[User]CheckIn'
+        }
+    <# End Remove the old stuff #>
     }
 }
 
