@@ -8,7 +8,6 @@ Configuration McBIC_Kids_Checkin
     Import-DscResource -ModuleName cPowerPlan -Name cPowerPlan -ModuleVersion '1.0.0.0'
     Import-DscResource -ModuleName xWindowsUpdate -Name xMicrosoftUpdate -ModuleVersion '2.5.0.0'
     Import-DscResource -ModuleName xWindowsUpdate -Name xWindowsUpdateAgent -ModuleVersion '2.5.0.0'
-    #Import-DSCResource -ModuleName xComputerManagement -Name xScheduledTask -ModuleVersion '1.7.0.0'
     Import-DscResource -ModuleName Carbon -Name Carbon_ScheduledTask -ModuleVersion '2.2.0'
     
     Node $AllNodes.NodeName
@@ -145,20 +144,6 @@ Configuration McBIC_Kids_Checkin
     <# End Windows Update #>
 
     # Create a scheduled task to sync changes from the GIT repository
-        <#xScheduledTask SyncRepository
-        {
-            TaskName = 'Retrieve Configuration Updates'
-            ActionWorkingPath = 'C:\Repos\McBICKids'
-            ActionExecutable = '"C:\Program Files\Git\cmd\git.exe"'
-            ActionArguments = ' pull "https://github.com/randomnote1/McBICKids.git"'
-            ScheduleType = 'Minutes'
-            RepeatInterval = 15
-            StartTime = '12:10 AM'
-            Ensure = 'Present'
-            Enable = $true
-            DependsOn = '[File]PullFolder'
-        }#>
-
         Carbon_ScheduledTask SyncRepository
         {
             Name = 'Retrieve Configuration Updates'
