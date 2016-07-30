@@ -136,8 +136,23 @@ Configuration McBIC_Kids_Checkin
             ValueData = ( Join-Path -Path ( Split-Path -Path $node.PullDir -Parent ) -ChildPath '\Images\Background.png' )
             ValueType = 'String'
             PsDscRunAsCredential = $Node.CheckInPassword
+            DependsOn = '[User]CheckIn'
         }
     <# End Branding #>
+
+    <# User Experience #>
+        Registry CheckinScreenSaver
+        {
+            Key = 'HKEY_CURRENT_USER\Control Panel\Desktop'
+            ValueName = 'ScreenSaveActive'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = '0'
+            ValueType = 'String'
+            PsDscRunAsCredential = $Node.CheckInPassword
+            DependsOn = '[User]CheckIn'
+        }
+    <# End User Experience #>
 
     <# Windows Update #>
         xMicrosoftUpdate MicrosoftUpdate
