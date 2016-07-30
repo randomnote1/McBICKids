@@ -138,6 +138,18 @@ Configuration McBIC_Kids_Checkin
             PsDscRunAsCredential = $Node.CheckInPassword
             DependsOn = '[User]CheckIn'
         }
+
+        Registry AdminBackground
+        {
+            Key = 'HKEY_CURRENT_USER\Control Panel\Colors'
+            ValueName = 'Background'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = '0 0 0'
+            ValueType = 'String'
+            PsDscRunAsCredential = $Node.AdminPassword
+            DependsOn = '[User]McBICAdmin'
+        }
     <# End Branding #>
 
     <# User Experience #>
