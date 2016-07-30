@@ -126,6 +126,17 @@ Configuration McBIC_Kids_Checkin
             Force = $true
             MatchSource = $true
         }
+
+        Registry CheckinWallpaper
+        {
+            Key = 'HKEY_CURRENT_USER\Control Panel\Desktop'
+            ValueName = 'Wallpaper'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = ( Join-Path -Path ( Split-Path -Path $node.PullDir -Parent ) -ChildPath '\Images\Background.png' )
+            ValueType = 'String'
+            PsDscRunAsCredential = $Node.CheckInPassword
+        }
     <# End Branding #>
 
     <# Windows Update #>

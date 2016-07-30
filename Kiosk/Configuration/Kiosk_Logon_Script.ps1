@@ -15,6 +15,7 @@ if ( $env:COMPUTERNAME -match '^KIOSK-([A-Za-z]*)[\d]?$' )
 }
 
 # Set the desktop wallpaper
+<#
 Write-Host 'Setting the desktop wallpaper...'
 $wallpaperKey = 'HKCU:\Control Panel\Desktop'
 $wallpaperValue = ( Join-Path -Path ( Split-Path -Path $xmlConfig.mofCreationParameters.PullDir.PullDir -Parent ) -ChildPath '\Images\Background.png' )
@@ -22,6 +23,7 @@ if ( ( Get-ItemProperty -Path $wallpaperKey -Name Wallpaper ).Wallpaper -ne $wal
 {
     Set-ItemProperty -Path $wallpaperKey -Name Wallpaper -Value $wallpaperValue
 }
+#>
 
 if ( $env:USERNAME -eq 'check in' )
 {
