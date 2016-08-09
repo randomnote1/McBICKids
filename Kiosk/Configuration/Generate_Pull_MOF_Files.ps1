@@ -107,11 +107,22 @@ Configuration McBIC_Kids_Checkin
     <# End time zone configuration #>
 
     <# Configure the power plan #>       
+        Registry CsEnabled
+        {
+            Key = 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Power'
+            ValueName = 'CsEnabled'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = 0
+            ValueType = 'Dword'
+        }
+        
         cPowerPlan PowerPlan
         {
             IsSingleInstance = 'Yes'
             #PowerPlan = 'High Performance'
             PowerPlan = 'Balanced'
+            DependsOn = '[Registry]CsEnabled'
         }
     <# End power plan configuration #>
 
