@@ -175,6 +175,18 @@ Configuration McBIC_Kids_Checkin
             PsDscRunAsCredential = $Node.CheckInPassword
             DependsOn = '[User]CheckIn'
         }
+
+        Registry ShowTaskBar
+        {
+            Key = 'HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3'
+            ValueName = 'Settings'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = @('48','0','0','0','254','255','255','255','2','2','0','0','3','0','0','0','124','0','0','0','60','0','0','0','0','0','0','0','24','6','0','0','64','11','0','0','84','6','0','0','144','0','0','0','1','0','0','0')
+            ValueType = 'Binary'
+            PsDscRunAsCredential = $Node.CheckInPassword
+            DependsOn = '[User]CheckIn'
+        }
     <# End User Experience #>
 
     <# Windows Update #>
@@ -200,8 +212,6 @@ Configuration McBIC_Kids_Checkin
             Ensure = 'Present'
             TaskXml = $Node.SyncRepository
         }
-
-
 
     <# Remove the old stuff #>
         file RemoveCheckInShortcut
