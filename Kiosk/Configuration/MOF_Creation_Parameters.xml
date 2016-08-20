@@ -15,9 +15,10 @@
 		<Computer Name='KIOSK-KIDS1' />
 		<Computer Name='KIOSK-KIDS4' />
 		<Computer Name='KIOSK-NURSERY1' />
+<Computer Name='KIOSK-NURSERY2' />
 		<!-->
 		<Computer Name='KIOSK-KIDS2' />
-		<Computer Name='KIOSK-NURSERY2' />
+		
 		<-->
 	</Computers>
 </mofCreationParameters>
