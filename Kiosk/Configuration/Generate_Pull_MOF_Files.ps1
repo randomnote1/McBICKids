@@ -9,6 +9,7 @@ Configuration McBIC_Kids_Checkin
     Import-DscResource -ModuleName xWindowsUpdate -Name xMicrosoftUpdate -ModuleVersion '2.5.0.0'
     Import-DscResource -ModuleName xWindowsUpdate -Name xWindowsUpdateAgent -ModuleVersion '2.5.0.0'
     Import-DscResource -ModuleName Carbon -Name Carbon_ScheduledTask -ModuleVersion '2.2.0'
+    Import-DscResource -ModuleName xComputerManagement -Name xScheduledTask -ModuleVersion '1.7.0.0'
     
     Node $AllNodes.NodeName
     {
@@ -213,6 +214,14 @@ Configuration McBIC_Kids_Checkin
             TaskXml = $Node.SyncRepository
         }
 
+    # Create a scheduled task to shut down the computer on Sunday at 12:30pm
+        Carbon_ScheduledTask WeeklyShutDown
+        {
+            Name = 'Weekly ShutDown'
+            Ensure = 'Present'
+            TaskXml = $Node.WeeklyShutDown
+        }
+
     <# Remove the old stuff #>
         file RemoveCheckInShortcut
         {
@@ -246,7 +255,8 @@ $configurationData =
             InitializationPushSource = $xmlConfig.mofCreationParameters.InitializationPushSource.InitializationPushSource
             PullDir = $xmlConfig.mofCreationParameters.PullDir.PullDir
             PullShareName = $xmlConfig.mofCreationParameters.PullShareName.PullShareName
-            SyncRepository = ( Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'Retrieve_Configuration_Updates.xml' ) ) -join ''
+            SyncRepository = ( Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'ScheduledTasks\Retrieve_Configuration_Updates.xml' ) ) -join ''
+            WeeklyShutDown = ( Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'ScheduledTasks\WeeklyShutDown.xml' ) ) -join ''
         }
     )
 }
