@@ -118,16 +118,6 @@ Configuration McBIC_Kids_Checkin
             ValueType = 'Dword'
         }
         
-        <#
-        cPowerPlan PowerPlan
-        {
-            IsSingleInstance = 'Yes'
-            #PowerPlan = 'High Performance'
-            PowerPlan = 'Balanced'
-            DependsOn = '[Registry]CsEnabled'
-        }
-        #>
-        
         PowerPlan PowerPlan
         {
             ActivePowerPlan = 'Balanced'
@@ -235,13 +225,57 @@ Configuration McBIC_Kids_Checkin
         }
 
     <# Remove the old stuff #>
-        file RemoveCheckInShortcut
+        file RemoveCheckInShortcutCheckInStartup
         {
             Ensure = 'Absent'
             Type = 'File'
             DestinationPath = 'C:\Users\Check In\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\Check In.lnk'
             Force = $true
             DependsOn = '[User]CheckIn'
+        }
+
+        file RemoveCheckInShortcutCheckInDesktop
+        {
+            Ensure = 'Absent'
+            Type = 'File'
+            DestinationPath = 'C:\Users\Check In\Desktop\Check In.lnk'
+            Force = $true
+            DependsOn = '[User]CheckIn'
+        }
+
+        file RemoveCheckInShortcutAdminDesktop
+        {
+            Ensure = 'Absent'
+            Type = 'File'
+            DestinationPath = 'C:\Users\Check In\Desktop\Check In.lnk'
+            Force = $true
+            DependsOn = '[User]McBICAdmin'
+        }
+
+        file RemoveAutoLoginOnAdminDesktop
+        {
+            Ensure = 'Absent'
+            Type = 'File'
+            DestinationPath = 'C:\Users\Check In\Desktop\Auto Login On.lnk'
+            Force = $true
+            DependsOn = '[User]McBICAdmin'
+        }
+
+        file RemoveAutoLoginOffAdminDesktop
+        {
+            Ensure = 'Absent'
+            Type = 'File'
+            DestinationPath = 'C:\Users\Check In\Desktop\Auto Login Off.lnk'
+            Force = $true
+            DependsOn = '[User]McBICAdmin'
+        }
+
+        file RemoveMBK_TB_Setup
+        {
+            Ensure = 'Absent'
+            Type = 'Directory'
+            DestinationPath = 'C:\MBK_TB_Setup'
+            Force = $true
         }
     <# End Remove the old stuff #>
     }
