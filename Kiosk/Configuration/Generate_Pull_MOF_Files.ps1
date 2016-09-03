@@ -190,6 +190,18 @@ Configuration McBIC_Kids_Checkin
             PsDscRunAsCredential = $Node.CheckInPassword
             DependsOn = '[User]CheckIn'
         }
+
+        Registry DisableNotificationCenter
+        {
+            Key = 'HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\Explorer'
+            ValueName = 'DisableNotificationCenter'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = '1'
+            ValueType = 'Dword'
+            PsDscRunAsCredential = $Node.CheckInPassword
+            DependsOn = '[User]CheckIn'
+        }
     <# End User Experience #>
 
     <# Windows Update #>
