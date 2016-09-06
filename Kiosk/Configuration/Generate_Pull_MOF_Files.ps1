@@ -5,7 +5,7 @@ Configuration McBIC_Kids_Checkin
     Import-DscResource -ModuleName PSDesiredStateConfiguration -Name Registry
     Import-DscResource -ModuleName xSmbShare -Name xSmbShare -ModuleVersion '1.1.0.0'
     Import-DSCResource -ModuleName xTimeZone -Name xTimeZone -ModuleVersion '1.4.0.0'
-    Import-DscResource -ModuleName CustomizeWindows10 -Name PowerPlan -ModuleVersion '0.0.0.5'
+    Import-DscResource -ModuleName CustomizeWindows10 -Name PowerPlan -ModuleVersion '0.0.0.6'
     Import-DscResource -ModuleName xWindowsUpdate -Name xMicrosoftUpdate -ModuleVersion '2.5.0.0'
     Import-DscResource -ModuleName xWindowsUpdate -Name xWindowsUpdateAgent -ModuleVersion '2.5.0.0'
     Import-DscResource -ModuleName Carbon -Name Carbon_ScheduledTask -ModuleVersion '2.2.0'
