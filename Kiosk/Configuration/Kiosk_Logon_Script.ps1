@@ -134,15 +134,15 @@ if ( $env:USERNAME -eq 'check in' )
     }
     #>
 
-    # Bring the IE window to the front
-    [void] [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
-    [Microsoft.VisualBasic.Interaction]::AppActivate((Get-Process | Where-Object { $_.MainWindowHandle -eq $ie.HWND } | Select-Object -ExpandProperty Id))
-
     # Set it to kiosk mode
     $ie.FullScreen = $true
     
     # make the page visible
     $ie.Visible = $true
+
+    # Bring the IE window to the front
+    [void] [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
+    [Microsoft.VisualBasic.Interaction]::AppActivate((Get-Process | Where-Object { $_.MainWindowHandle -eq $ie.HWND } | Select-Object -ExpandProperty Id))
 }
 
 # Pause at the end
