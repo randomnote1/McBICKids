@@ -5,6 +5,12 @@ if ( $env:USERNAME -eq 'check in' )
 {
     $ie = New-Object -ComObject InternetExplorer.Application
     
+    # Set it to kiosk mode
+    $ie.FullScreen = $true
+    
+    # make the page visible
+    $ie.Visible = $true
+
     # Navigate to Planning Center Check-Ins
     $checkinURL = 'https://check-ins.planningcenteronline.com/station'
     $ie.Navigate($checkinURL)
@@ -133,12 +139,6 @@ if ( $env:USERNAME -eq 'check in' )
         do { Start-Sleep -Seconds 2 } while ( $ie.Busy -or ( $ie.ReadyState -ne 4 ) )
     }
     #>
-
-    # Set it to kiosk mode
-    $ie.FullScreen = $true
-    
-    # make the page visible
-    $ie.Visible = $true
 
     # Bring the IE window to the front
     [void] [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
