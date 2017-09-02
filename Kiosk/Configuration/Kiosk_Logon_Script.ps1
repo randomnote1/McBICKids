@@ -2,6 +2,7 @@ $loginName = 'djreist@gmail.com'
 $loginPassword = 'mcbic1050'
 
 if ( $env:USERNAME -eq 'check in' )
+#if ( $env:USERNAME )
 {
     $ie = New-Object -ComObject InternetExplorer.Application
     

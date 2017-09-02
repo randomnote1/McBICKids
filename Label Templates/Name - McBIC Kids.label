@@ -37,7 +37,7 @@
 	</ObjectInfo>
 	<ObjectInfo>
 		<TextObject>
-			<Name>First Name_1</Name>
+			<Name>Last Name</Name>
 			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
 			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
 			<LinkedObjectName />
@@ -81,7 +81,7 @@
 			<Verticalized>False</Verticalized>
 			<StyledText>
 				<Element>
-					<String xml:space="preserve">allergy</String>
+					<String xml:space="preserve">Allergies: wheat, dairy</String>
 					<Attributes>
 						<Font Family="Segoe UI" Size="10" Bold="True" Italic="False" Underline="False" Strikeout="False" />
 						<ForeColor Alpha="255" Red="255" Green="255" Blue="255" HueScale="100" />
@@ -93,7 +93,7 @@
 	</ObjectInfo>
 	<ObjectInfo>
 		<TextObject>
-			<Name>Grade</Name>
+			<Name>Location Name</Name>
 			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
 			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
 			<LinkedObjectName />
@@ -186,8 +186,8 @@
 		<Bounds X="3312" Y="56.9999999999998" Width="1872" Height="1872" />
 	</ObjectInfo>
 	<ObjectInfo>
-		<TextObject>
-			<Name>Current Date</Name>
+		<DateTimeObject>
+			<Name>DATE-TIME</Name>
 			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
 			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
 			<LinkedObjectName />
@@ -201,21 +201,18 @@
 			<TextFitMode>ShrinkToFit</TextFitMode>
 			<UseFullFontHeight>True</UseFullFontHeight>
 			<Verticalized>False</Verticalized>
-			<StyledText>
-				<Element>
-					<String xml:space="preserve">Sunday, 12/12 10:45 AM</String>
-					<Attributes>
-						<Font Family="Segoe UI" Size="10" Bold="True" Italic="False" Underline="False" Strikeout="False" />
-						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />
-					</Attributes>
-				</Element>
-			</StyledText>
-		</TextObject>
-		<Bounds X="336" Y="1584" Width="2880" Height="277.5" />
+			<DateTimeFormat>LongMonthDayLongYear</DateTimeFormat>
+			<Font Family="Segoe UI" Size="10" Bold="True" Italic="False" Underline="False" Strikeout="False" />
+			<PreText />
+			<PostText />
+			<IncludeTime>False</IncludeTime>
+			<Use24HourFormat>False</Use24HourFormat>
+		</DateTimeObject>
+		<Bounds X="336" Y="1440" Width="2880" Height="273.6" />
 	</ObjectInfo>
 	<ObjectInfo>
 		<TextObject>
-			<Name>Location Name</Name>
+			<Name>Current Time Only</Name>
 			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
 			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
 			<LinkedObjectName />
@@ -231,7 +228,7 @@
 			<Verticalized>False</Verticalized>
 			<StyledText>
 				<Element>
-					<String xml:space="preserve">FX Family Experience</String>
+					<String xml:space="preserve">9:30am, 11:00am</String>
 					<Attributes>
 						<Font Family="Segoe UI" Size="10" Bold="True" Italic="False" Underline="False" Strikeout="False" />
 						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />
@@ -239,6 +236,6 @@
 				</Element>
 			</StyledText>
 		</TextObject>
-		<Bounds X="336" Y="1296" Width="2880" Height="277.5" />
+		<Bounds X="336" Y="1699.2" Width="2880" Height="273.6" />
 	</ObjectInfo>
 </DieCutLabel>

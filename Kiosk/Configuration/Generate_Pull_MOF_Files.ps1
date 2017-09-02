@@ -204,6 +204,18 @@ Configuration McBIC_Kids_Checkin
             PsDscRunAsCredential = $Node.CheckInPassword
             DependsOn = '[User]CheckIn'
         }
+
+        Registry InternetExplorerZoom
+        {
+            Key = 'HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Zoom'
+            ValueName = 'ZoomFactor'
+            Ensure = 'Present'
+            Force = $true
+            ValueData = '96000'
+            ValueType = 'Dword'
+            PsDscRunAsCredential = $Node.CheckInPassword
+            DependsOn = '[User]CheckIn'
+        }
     <# End User Experience #>
 
     <# Windows Update #>
@@ -292,6 +304,58 @@ Configuration McBIC_Kids_Checkin
             Force = $true
         }
     <# End Remove the old stuff #>
+
+    #region Download and install the DYMO printer software if requred
+        <#Script DymoPrinterSoftware
+        {
+            GetScript = 
+            {
+                # Find the DYMO software if it is installed and get the version
+                $dymoVersion = Get-WmiObject -Class Win32_Product -Filter 'Name = "DYMO Label"'
+                return @{ Version = $dymoVersion.Version }
+            }
+
+            SetScript = 
+            {
+                # Download the DYMO Label software
+                $url = 'http://download.dymo.com/dymo/Software/Win/DLS8Setup.8.6.2.exe'
+                $outFile = Join-Path -Path C:\ -ChildPath DLS8Setup.8.6.2.exe
+                $result = Invoke-WebRequest -Uri $url -OutFile $output
+
+                # Ensure the file downloaded
+                if ( ( $result.StatusCode -eq 200 ) -and ( Test-Path -Path $outFile -PathType Leaf -ErrorAction Stop ) )
+                {
+                    # Install the software
+                    & $outFile /S /v/qn
+                }
+                else
+                {
+                    throw 'The download did not complete successfully.'
+                }
+
+                # Try to remove the file
+                Remove-Item -Path $outFile -Force -ErrorAction SilentlyContinue
+            }
+
+            TestScript = 
+            {
+                # Ensure DYMO Label version 8.6.2 or greater is installed.
+                $state = $GetScript
+                try
+                {
+                    return ( [int]$state.Version.Replace('.','') -ge [int]('8.6.710.0'.Replace('.','')) )
+                }
+                catch
+                {
+                    # If DYMO Label is not installed, it will error, so return false
+                    return $false
+                }
+            }
+
+            PsDscRunAsCredential = $Node.AdminPassword
+            DependsOn = '[User]McBICAdmin'
+        }#>
+    #endregion Download and install the DYMO printer software if requred
     }
 }
 
