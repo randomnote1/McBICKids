@@ -170,7 +170,7 @@ Process
             # 100 ms seems to be frequent enough that somebody can't double-tap
             Start-Sleep -Milliseconds 100
         }
-        while ( -not [string]::IsNullOrEmpty($doc.title) )
+        while ( $true )
     }
 }
 
