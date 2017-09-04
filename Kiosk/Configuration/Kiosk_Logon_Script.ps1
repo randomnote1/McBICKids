@@ -152,20 +152,14 @@ Process
         [void] [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
         [Microsoft.VisualBasic.Interaction]::AppActivate((Get-Process | Where-Object { $_.MainWindowHandle -eq $ie.HWND } | Select-Object -ExpandProperty Id))
 
-        # Create a variable to indicate if the IE document did something
-        $ieDocumentChanged = $true
-
         do
         {
             # Inject a style element to only allow scrolling
             # This is a workaround to disabling double-tap to zoom
-            $zoomStyleNode = $doc.createElement('style')
+            $zoomStyleNode = $ie.Document.createElement('style')
             $zoomStyleNode.innerHTML = 'html { touch-action: pan-x pan-y; }'
-            $doc.body.appendChild($zoomStyleNode) | Out-Null
+            $ie.Document.body.appendChild($zoomStyleNode) | Out-Null
 
-            # The document is now static
-            $ieDocumentChanged = $false
-            
             # Sleep so we don't use ALL the CPU
             # 100 ms seems to be frequent enough that somebody can't double-tap
             Start-Sleep -Milliseconds 100
