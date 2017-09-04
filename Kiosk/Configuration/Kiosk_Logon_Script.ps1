@@ -1,17 +1,11 @@
 $loginName = 'djreist@gmail.com'
 $loginPassword = 'mcbic1050'
 
-if ( $env:USERNAME -eq 'check in' )
-#if ( $env:USERNAME )
+#if ( $env:USERNAME -eq 'check in' )
+if ( $env:USERNAME )
 {
     $ie = New-Object -ComObject InternetExplorer.Application
     
-    # Set it to kiosk mode
-    $ie.FullScreen = $true
-    
-    # make the page visible
-    $ie.Visible = $true
-
     # Navigate to Planning Center Check-Ins
     $checkinURL = 'https://check-ins.planningcenteronline.com/station'
     $ie.Navigate($checkinURL)
@@ -23,7 +17,7 @@ if ( $env:USERNAME -eq 'check in' )
     $doc = $ie.Document
 
     # If we need to log into the page
-    if ( $doc.getElementById('email') )
+    if ( $doc.nameProp -match 'Login - Accounts' )
     {
         # Enter the username
         $doc.getElementById('email').Value = $loginName
@@ -36,21 +30,20 @@ if ( $env:USERNAME -eq 'check in' )
 
         # Wait for the page to load
         do { Start-Sleep -Seconds 2 } while ( $ie.Busy -or ( $ie.ReadyState -ne 4 ) )
+
+        # If the account selection screen is displayed
+        if ( $doc.getElementsByTagName('a') | Where-Object -FilterScript { ( $_.href -match 'user_id=28987447' ) -and ( $_.textContent -eq 'Log in' ) } )
+        {
+            $userLoginButton = $doc.getElementsByTagName('a') | Where-Object -FilterScript { ( $_.href -match 'user_id=28987447' ) -and ( $_.textContent -eq 'Log in' ) }
+            $userLoginButton.click()
+
+            # Wait for the page to load
+            do { Start-Sleep -Seconds 2 } while ( $ie.Busy -or ( $ie.ReadyState -ne 4 ) )
+        }
     }
 
-    # If the account selection screen is displayed
-    if ( $doc.getElementsByTagName('a') | Where-Object -FilterScript { ( $_.href -match 'user_id=28987447' ) -and ( $_.textContent -eq 'Log in' ) } )
-    {
-        $userLoginButton = $doc.getElementsByTagName('a') | Where-Object -FilterScript { ( $_.href -match 'user_id=28987447' ) -and ( $_.textContent -eq 'Log in' ) }
-        $userLoginButton.click()
-
-        # Wait for the page to load
-        do { Start-Sleep -Seconds 2 } while ( $ie.Busy -or ( $ie.ReadyState -ne 4 ) )
-    }
-
-    
     # If the station isn't registered
-    if ( $doc.getElementById('station_name') )
+    if ( -not [string]::IsNullOrEmpty( $doc.getElementById('station_name') ) )
     {
         # Enter the name of the kiosk into the station name text box
         $i = 0
@@ -141,9 +134,35 @@ if ( $env:USERNAME -eq 'check in' )
     }
     #>
 
+    # Set it to kiosk mode
+    $ie.FullScreen = $true
+    
+    # make the page visible
+    $ie.Visible = $true
+
     # Bring the IE window to the front
     [void] [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
     [Microsoft.VisualBasic.Interaction]::AppActivate((Get-Process | Where-Object { $_.MainWindowHandle -eq $ie.HWND } | Select-Object -ExpandProperty Id))
+
+    # Create a variable to indicate if the IE document did something
+    $ieDocumentChanged = $true
+
+    do
+    {
+        # Inject a style element to only allow scrolling
+        # This is a workaround to disabling double-tap to zoom
+        $zoomStyleNode = $doc.createElement('style')
+        $zoomStyleNode.innerHTML = 'html { touch-action: pan-x pan-y; }'
+        $doc.body.appendChild($zoomStyleNode) | Out-Null
+
+        # The document is now static
+        $ieDocumentChanged = $false
+        
+        # Sleep so we don't use ALL the CPU
+        # 100 ms seems to be frequent enough that somebody can't double-tap
+        Start-Sleep -Milliseconds 100
+    }
+    while ( -not [string]::IsNullOrEmpty($doc.title) )
 }
 
 # Pause at the end
