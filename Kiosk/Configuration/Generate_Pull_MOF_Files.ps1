@@ -211,7 +211,7 @@ Configuration McBIC_Kids_Checkin
             ValueName = 'ZoomFactor'
             Ensure = 'Present'
             Force = $true
-            ValueData = '96000'
+            ValueData = '95000'
             ValueType = 'Dword'
             PsDscRunAsCredential = $Node.CheckInPassword
             DependsOn = '[User]CheckIn'
@@ -248,6 +248,14 @@ Configuration McBIC_Kids_Checkin
             Name = 'Weekly ShutDown'
             Ensure = 'Present'
             TaskXml = $Node.WeeklyShutDown
+        }
+
+    # Create a scheduled task to shut down the computer on Sunday at 12:30pm
+        Carbon_ScheduledTask NightlyShutDown
+        {
+            Name = 'Daily ShutDown'
+            Ensure = 'Present'
+            TaskXml = $Node.NightlyShutDown
         }
 
     <# Remove the old stuff #>
@@ -381,6 +389,7 @@ $configurationData =
             PullShareName = $xmlConfig.mofCreationParameters.PullShareName.PullShareName
             SyncRepository = ( Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'ScheduledTasks\Retrieve_Configuration_Updates.xml' ) ) -join ''
             WeeklyShutDown = ( Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'ScheduledTasks\WeeklyShutDown.xml' ) ) -join ''
+            NightlyShutDown = ( Get-Content -Path ( Join-Path -Path ( Split-Path -Path $MyInvocation.MyCommand.Definition -Parent ) -ChildPath 'ScheduledTasks\NightlyShutDown.xml' ) ) -join ''
         }
     )
 }
