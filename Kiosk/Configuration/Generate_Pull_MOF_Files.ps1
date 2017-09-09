@@ -211,7 +211,7 @@ Configuration McBIC_Kids_Checkin
             ValueName = 'ZoomFactor'
             Ensure = 'Present'
             Force = $true
-            ValueData = '95000'
+            ValueData = '94000'
             ValueType = 'Dword'
             PsDscRunAsCredential = $Node.CheckInPassword
             DependsOn = '[User]CheckIn'
