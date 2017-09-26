@@ -2,6 +2,7 @@ Configuration McBIC_Checkin_Kiosk
 {
     Import-DscResource -ModuleName CustomizeWindows10 -ModuleVersion 0.0.0.7
     Import-DscResource -ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xComputerManagement -ModuleVersion 2.1.0.0
     Import-DscResource -ModuleName xSmbShare -ModuleVersion 2.0.0.0
     Import-DSCResource -ModuleName xTimeZone -ModuleVersion 1.6.0.0
 
@@ -200,15 +201,54 @@ Configuration McBIC_Checkin_Kiosk
             }
         #endregion Windows Update
 
-        File LogonScriptStartupShortcut
-        {
-            Ensure = 'Present'
-            Type = 'File'
-            SourcePath = ( Join-Path -Path ( Split-Path -Path $node.PullSharePath -Parent ) -ChildPath 'LaunchKiosk.lnk' )
-            DestinationPath = ( Join-Path -Path ([Environment]::GetFolderPath('CommonStartup')) -ChildPath 'LaunchKiosk.lnk' )
-            CheckSum = 'SHA-256'
-            Force = $true
-            MatchSource = $true
-        }
+        #region Login Script Shortcuts
+            File LogonScriptDesktopShortcut
+            {
+                Ensure = 'Present'
+                Type = 'File'
+                SourcePath = ( Join-Path -Path ( Split-Path -Path $node.PullSharePath -Parent ) -ChildPath 'LaunchKiosk.lnk' )
+                DestinationPath = ( Join-Path -Path ([Environment]::GetFolderPath('CommonDesktopDirectory')) -ChildPath 'LaunchKiosk.lnk' )
+                CheckSum = 'SHA-256'
+                Force = $true
+                MatchSource = $true
+            }
+
+            File LogonScriptStartupShortcut
+            {
+                Ensure = 'Present'
+                Type = 'File'
+                SourcePath = ( Join-Path -Path ( Split-Path -Path $node.PullSharePath -Parent ) -ChildPath 'LaunchKiosk.lnk' )
+                DestinationPath = ( Join-Path -Path ([Environment]::GetFolderPath('CommonStartup')) -ChildPath 'LaunchKiosk.lnk' )
+                CheckSum = 'SHA-256'
+                Force = $true
+                MatchSource = $true
+            }
+        #endregion Login Script Shortcuts
+
+        #region Scheduled Tasks
+            xScheduledTask SyncRepository
+            {
+                ActionArguments = 'pull "https://github.com/randomnote1/McBICKids.git"'
+                ActionExecutable = 'C:\Program Files\Git\cmd\git.exe'
+                ActionWorkingPath = 'C:\Repos\McBICKids'
+                AllowStartIfOnBatteries = $true
+                DaysInterval = 1
+                DependsOn = '[File]PullFolder'
+                DisallowHardTerminate = $false
+                DisallowDemandStart = $false
+                DontStopIfGoingOnBatteries = $true
+                Enable = $true
+                Ensure = 'Present'
+                Hidden = $false
+                MultipleInstances = 'IgnoreNew'
+                RepeatInterval = '00:15:00'
+                RepetitionDuration = 'Indefinitely'
+                RunOnlyIfIdle = $false
+                RunOnlyIfNetworkAvailable = $true
+                ScheduleType = 'Daily'
+                StartWhenAvailable = $true
+                TaskName = 'Retrieve Configuration Updates'
+            }
+        #endregion Scheduled Tasks
     }
 }
