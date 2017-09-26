@@ -30,7 +30,7 @@ Write-Host $env:COMPUTERNAME -ForegroundColor Cyan
 
 # Make sure the network connection is set to private
 Write-Host 'Setting the network profile to private...' -ForegroundColor Cyan
-Get-NetConnectionProfile | % { Set-NetConnectionProfile -InterfaceIndex $_.InterfaceIndex -NetworkCategory 'Private' }
+Get-NetConnectionProfile | ForEach-Object -Process { Set-NetConnectionProfile -InterfaceIndex $_.InterfaceIndex -NetworkCategory 'Private' }
 
 # enable winrm
 Write-Host 'Configuring WINRM...' -ForegroundColor Cyan
@@ -39,12 +39,8 @@ Write-Host 'Configuring WINRM...' -ForegroundColor Cyan
 # Pause a bit
 Start-Sleep -Seconds 10
 
-# Add the local computer to the trusted hosts
-#Write-Host 'Configuring the WINRM trusted hosts...' -ForegroundColor Cyan
-#winrm set winrm/config/client ( '@{TrustedHosts=' + $env:COMPUTERNAME + '}' )
-#winrm set winrm/config/client @{'TrustedHosts' = $env:COMPUTERNAME }
-
 # Make sure the SchedProv.mof is loaded
+# This ensures WMI is operating correctly
 mofcomp C:\Windows\system32\wbem\SchedProv.mof
 
 # Check if GIT is installed
@@ -95,18 +91,19 @@ Install-Module -Name xSmbShare -ErrorAction Stop
 
 # Define the MOF folder
 Write-Host 'Performing the initial push configuration...' -ForegroundColor Cyan
-$mofFolder = ( Join-Path -Path $pullFolder -ChildPath '\Kiosk\Configuration\Deploy-Initial' )
+$mofFolder = ( Join-Path -Path $pullFolder -ChildPath 'Checkin_Kiosk' )
 
 # Set the configuration
-Start-DscConfiguration -ComputerName $env:COMPUTERNAME -Path $mofFolder -Wait -Verbose -Force
-
-# Determine where the mof files will be stored
-Write-Host 'Waiting for the configuration to complete...' -ForegroundColor Cyan
-$mofLocation = ( Get-DscConfiguration | ? { $_.ResourceID -eq '[File]PullFolder' } ).DestinationPath
+Start-DscConfiguration -ComputerName localhost -Path $mofFolder -Wait -Verbose -Force
 
 # Snooze while the path is created
-while ( -not ( Test-Path -Path $mofLocation ) ) { Start-Sleep -Seconds 5 }
+$dscConfigurationSuccess = $false
+while ( -not $dscConfigurationSuccess ) {
+    Start-Sleep -Seconds 5
+    $dscConfigurationSuccess = ( Get-DscConfigurationStatus ).Status -eq 'Success'
+    Write-Host "DSC Configuration Status: $dscConfigurationSuccess" -ForegroundColor Cyan
+}
 
 # Set the local configuration manager to pull mode
 Write-Host 'Configure the LCM to PULL mode...' -ForegroundColor Cyan
-Set-DscLocalConfigurationManager -Path $mofFolder -ComputerName $env:COMPUTERNAME -Force
+Set-DscLocalConfigurationManager -Path $mofFolder -ComputerName localhost -Force
