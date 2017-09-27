@@ -249,6 +249,50 @@ Configuration McBIC_Checkin_Kiosk
                 StartWhenAvailable = $true
                 TaskName = 'Retrieve Configuration Updates'
             }
+
+            xScheduledTask NightlyShutdown
+            {
+                ActionArguments = '/s /t 300 /d p:0:0 /c "Nightly ShutDown"'
+                ActionExecutable = 'C:\Windows\System32\shutdown.exe'
+                ActionWorkingPath = 'C:\Repos\McBICKids'
+                AllowStartIfOnBatteries = $true
+                DaysOfWeek = 'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'
+                DisallowHardTerminate = $false
+                DisallowDemandStart = $false
+                DontStopIfGoingOnBatteries = $true
+                Enable = $true
+                Ensure = 'Present'
+                Hidden = $false
+                MultipleInstances = 'IgnoreNew'
+                RunOnlyIfIdle = $false
+                RunOnlyIfNetworkAvailable = $false
+                ScheduleType = 'Weekly'
+                StartTime = '20:25:00'
+                StartWhenAvailable = $false
+                TaskName = 'Nightly Shutdown'
+            }
+
+            xScheduledTask WeeklyShutdown
+            {
+                ActionArguments = '/s /t 300 /d p:0:0 /c "Nightly ShutDown"'
+                ActionExecutable = 'C:\Windows\System32\shutdown.exe'
+                ActionWorkingPath = 'C:\Repos\McBICKids'
+                AllowStartIfOnBatteries = $true
+                DaysOfWeek = 'Sunday'
+                DisallowHardTerminate = $false
+                DisallowDemandStart = $false
+                DontStopIfGoingOnBatteries = $true
+                Enable = $true
+                Ensure = 'Present'
+                Hidden = $false
+                MultipleInstances = 'IgnoreNew'
+                RunOnlyIfIdle = $false
+                RunOnlyIfNetworkAvailable = $false
+                ScheduleType = 'Weekly'
+                StartTime = '12:10:00'
+                StartWhenAvailable = $false
+                TaskName = 'Weekly Shutdown'
+            }
         #endregion Scheduled Tasks
     }
 }
