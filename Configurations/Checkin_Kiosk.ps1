@@ -1,10 +1,11 @@
-Configuration McBIC_Checkin_Kiosk
+Configuration Checkin_Kiosk
 {
     Import-DscResource -ModuleName CustomizeWindows10 -ModuleVersion 0.0.0.7
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xComputerManagement -ModuleVersion 2.1.0.0
     Import-DscResource -ModuleName xSmbShare -ModuleVersion 2.0.0.0
     Import-DSCResource -ModuleName xTimeZone -ModuleVersion 1.6.0.0
+    Import-DSCResource -ModuleName xWindowsUpdate -ModuleVersion 2.7.0.0
 
     Node $AllNodes.NodeName
     {
